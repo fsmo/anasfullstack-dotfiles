@@ -1,0 +1,23 @@
+<preference name="EnableViewportScale" value="true"/>
+<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+<preference name="MediaPlaybackAllowsAirPlay" value="false"/>
+<preference name="MediaPlaybackRequiresUserAction" value="true"/>
+<preference name="AllowInlineMediaPlayback" value="true"/>
+<preference name="BackupWebStorage" value="local"/>
+<preference name="TopActivityIndicator" value="white"/>
+<preference name="KeyboardDisplayRequiresUserAction" value="false"/>
+<preference name="SuppressesIncrementalRendering" value="true"/>
+<preference name="GapBetweenPages" value="0"/>
+<preference name="PageLength" value="0"/>
+<preference name="PaginationBreakingMode" value="page"/>
+<preference name="PaginationMode" value="unpaginated"/>
+<preference name="UIWebViewDecelerationSpeed" value="fast" />
+<preference name="ErrorUrl" value="myErrorPage.html"/>
+<preference name="OverrideUserAgent" value="Mozilla/5.0 My Browser" />
+<preference name="AppendUserAgent" value="My Browser" />
+<preference name="target-device" value="universal" />
+<preference name="deployment-target" value="7.0" />
+<preference name="CordovaWebViewEngine" value="CDVUIWebViewEngine" />
+<preference name="SuppressesLongPressGesture" value="true" />
+<preference name="Suppresses3DTouchGesture" value="true" />
+<preference name="CDVSystemSchemesOverride" value="maps,tel,telprompt" />

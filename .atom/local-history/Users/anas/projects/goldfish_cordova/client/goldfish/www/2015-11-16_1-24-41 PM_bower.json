@@ -1,0 +1,25 @@
+{
+  "name": "goldfish",
+  "version": "0.0.1",
+  "authors": [
+    "Anas Aboureada <anas.aboureada@doremir.com>"
+  ],
+  "description": "GoldFish Test App",
+  "main": "index.html",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ng-cordova": "~0.0.3",
+    "angular-timer": "~1.3.3"
+  }
+}

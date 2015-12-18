@@ -1,0 +1,1 @@
+{".source.js":{"ngFilter":{"prefix":"ngfilter","body":"(function() {\n    'use strict';\n\n    angular\n        .module('${1:module}')\n        .filter('${2:filter}', ${2:filter});\n\n    function ${2:filter}() {\n        return ${2:filter}Filter\n\n        function ${2:filter}Filter(${3:params}) {\n            return ${3:params};\n        }\n    }\n})();"}}}

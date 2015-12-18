@@ -1,0 +1,17 @@
+{
+  "createdByTransform": true,
+  "original": {
+    "updatedAt": "2015-10-19T15:09:05.051Z",
+    "size": 589868,
+    "type": "audio/wav"
+  },
+  "uploadedAt": "2015-10-19T15:09:05.290Z",
+  "_id": "vkF77LZMNYfE5P8jA",
+  "collectionName": "AudioStream",
+  "copies": {
+    "AudioStream": {
+      "type": "audio/wav",
+      "size": 589868
+    }
+  }
+}

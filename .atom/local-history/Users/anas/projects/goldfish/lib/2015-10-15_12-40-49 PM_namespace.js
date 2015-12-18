@@ -1,0 +1,1 @@
+AudioStream = new Meteor.Stream('AudioStream');

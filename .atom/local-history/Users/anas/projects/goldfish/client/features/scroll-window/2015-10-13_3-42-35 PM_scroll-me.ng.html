@@ -1,0 +1,9 @@
+<div ng-cloak>
+  <md-content layout="column">
+    <md-virtual-repeat-container id="vertical-container">
+      <div md-virtual-repeat="item in dynamicItems" md-on-demand class="repeated-item" flex>
+        {{item}}
+      </div>
+    </md-virtual-repeat-container>
+  </md-content>
+</div>

@@ -1,0 +1,69 @@
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+/** @babel */
+
+var _fixmyjs = require('fixmyjs');
+
+var _fixmyjs2 = _interopRequireDefault(_fixmyjs);
+
+var _jshintSrcCli = require('jshint/src/cli');
+
+var _jshintSrcCli2 = _interopRequireDefault(_jshintSrcCli);
+
+function init() {
+	var editor = atom.workspace.getActiveTextEditor();
+
+	if (!editor) {
+		return;
+	}
+
+	var file = editor.getURI();
+	var config = file ? _jshintSrcCli2['default'].getConfig(file) : {};
+	var selectedText = editor.getSelectedText();
+	var text = selectedText || editor.getText();
+	var retText = '';
+
+	try {
+		if (atom.config.get('fixmyjs.legacy')) {
+			var jshint = require('jshint').JSHINT;
+			jshint(text, config);
+			retText = (0, _fixmyjs2['default'])(jshint.data(), text).run();
+		} else {
+			retText = _fixmyjs2['default'].fix(text, config);
+		}
+	} catch (err) {
+		console.error(err);
+		atom.beep();
+		return;
+	}
+
+	var cursorPosition = editor.getCursorBufferPosition();
+
+	if (selectedText) {
+		editor.setTextInBufferRange(editor.getSelectedBufferRange(), retText);
+	} else {
+		editor.setText(retText);
+	}
+
+	editor.setCursorBufferPosition(cursorPosition);
+}
+
+var config = {
+	legacy: {
+		type: 'boolean',
+		'default': true,
+		description: 'Legacy mode uses the last stable version of the module which uses JSHint to detect errors in your code and fix them. It does not include all of the fixes the current version of FixMyJS exposes, but does do a much better job of preserving source formatting.'
+	}
+};
+
+exports.config = config;
+var activate = function activate() {
+	atom.commands.add('atom-workspace', 'FixMyJS', init);
+};
+exports.activate = activate;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9hbmFzLy5hdG9tL3BhY2thZ2VzL2ZpeG15anMvaW5kZXguanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7dUJBQ29CLFNBQVM7Ozs7NEJBQ1AsZ0JBQWdCOzs7O0FBRXRDLFNBQVMsSUFBSSxHQUFHO0FBQ2YsS0FBTSxNQUFNLEdBQUcsSUFBSSxDQUFDLFNBQVMsQ0FBQyxtQkFBbUIsRUFBRSxDQUFDOztBQUVwRCxLQUFJLENBQUMsTUFBTSxFQUFFO0FBQ1osU0FBTztFQUNQOztBQUVELEtBQU0sSUFBSSxHQUFHLE1BQU0sQ0FBQyxNQUFNLEVBQUUsQ0FBQztBQUM3QixLQUFNLE1BQU0sR0FBRyxJQUFJLEdBQUcsMEJBQVUsU0FBUyxDQUFDLElBQUksQ0FBQyxHQUFHLEVBQUUsQ0FBQztBQUNyRCxLQUFNLFlBQVksR0FBRyxNQUFNLENBQUMsZUFBZSxFQUFFLENBQUM7QUFDOUMsS0FBTSxJQUFJLEdBQUcsWUFBWSxJQUFJLE1BQU0sQ0FBQyxPQUFPLEVBQUUsQ0FBQztBQUM5QyxLQUFJLE9BQU8sR0FBRyxFQUFFLENBQUM7O0FBRWpCLEtBQUk7QUFDSCxNQUFJLElBQUksQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLGdCQUFnQixDQUFDLEVBQUU7QUFDdEMsT0FBTSxNQUFNLEdBQUcsT0FBTyxDQUFDLFFBQVEsQ0FBQyxDQUFDLE1BQU0sQ0FBQztBQUN4QyxTQUFNLENBQUMsSUFBSSxFQUFFLE1BQU0sQ0FBQyxDQUFDO0FBQ3JCLFVBQU8sR0FBRywwQkFBUSxNQUFNLENBQUMsSUFBSSxFQUFFLEVBQUUsSUFBSSxDQUFDLENBQUMsR0FBRyxFQUFFLENBQUM7R0FDN0MsTUFBTTtBQUNOLFVBQU8sR0FBRyxxQkFBUSxHQUFHLENBQUMsSUFBSSxFQUFFLE1BQU0sQ0FBQyxDQUFDO0dBQ3BDO0VBQ0QsQ0FBQyxPQUFPLEdBQUcsRUFBRTtBQUNiLFNBQU8sQ0FBQyxLQUFLLENBQUMsR0FBRyxDQUFDLENBQUM7QUFDbkIsTUFBSSxDQUFDLElBQUksRUFBRSxDQUFDO0FBQ1osU0FBTztFQUNQOztBQUVELEtBQU0sY0FBYyxHQUFHLE1BQU0sQ0FBQyx1QkFBdUIsRUFBRSxDQUFDOztBQUV4RCxLQUFJLFlBQVksRUFBRTtBQUNqQixRQUFNLENBQUMsb0JBQW9CLENBQUMsTUFBTSxDQUFDLHNCQUFzQixFQUFFLEVBQUUsT0FBTyxDQUFDLENBQUM7RUFDdEUsTUFBTTtBQUNOLFFBQU0sQ0FBQyxPQUFPLENBQUMsT0FBTyxDQUFDLENBQUM7RUFDeEI7O0FBRUQsT0FBTSxDQUFDLHVCQUF1QixDQUFDLGNBQWMsQ0FBQyxDQUFDO0NBQy9DOztBQUVNLElBQU0sTUFBTSxHQUFHO0FBQ3JCLE9BQU0sRUFBRTtBQUNQLE1BQUksRUFBRSxTQUFTO0FBQ2YsYUFBUyxJQUFJO0FBQ2IsYUFBVyxFQUFFLGtRQUFrUTtFQUMvUTtDQUNELENBQUM7OztBQUVLLElBQU0sUUFBUSxHQUFHLFNBQVgsUUFBUSxHQUFTO0FBQzdCLEtBQUksQ0FBQyxRQUFRLENBQUMsR0FBRyxDQUFDLGdCQUFnQixFQUFFLFNBQVMsRUFBRSxJQUFJLENBQUMsQ0FBQztDQUNyRCxDQUFDIiwiZmlsZSI6Ii9Vc2Vycy9hbmFzLy5hdG9tL3BhY2thZ2VzL2ZpeG15anMvaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKiogQGJhYmVsICovXG5pbXBvcnQgZml4bXlqcyBmcm9tICdmaXhteWpzJztcbmltcG9ydCBqc2hpbnRDbGkgZnJvbSAnanNoaW50L3NyYy9jbGknO1xuXG5mdW5jdGlvbiBpbml0KCkge1xuXHRjb25zdCBlZGl0b3IgPSBhdG9tLndvcmtzcGFjZS5nZXRBY3RpdmVUZXh0RWRpdG9yKCk7XG5cblx0aWYgKCFlZGl0b3IpIHtcblx0XHRyZXR1cm47XG5cdH1cblxuXHRjb25zdCBmaWxlID0gZWRpdG9yLmdldFVSSSgpO1xuXHRjb25zdCBjb25maWcgPSBmaWxlID8ganNoaW50Q2xpLmdldENvbmZpZyhmaWxlKSA6IHt9O1xuXHRjb25zdCBzZWxlY3RlZFRleHQgPSBlZGl0b3IuZ2V0U2VsZWN0ZWRUZXh0KCk7XG5cdGNvbnN0IHRleHQgPSBzZWxlY3RlZFRleHQgfHwgZWRpdG9yLmdldFRleHQoKTtcblx0bGV0IHJldFRleHQgPSAnJztcblxuXHR0cnkge1xuXHRcdGlmIChhdG9tLmNvbmZpZy5nZXQoJ2ZpeG15anMubGVnYWN5JykpIHtcblx0XHRcdGNvbnN0IGpzaGludCA9IHJlcXVpcmUoJ2pzaGludCcpLkpTSElOVDtcblx0XHRcdGpzaGludCh0ZXh0LCBjb25maWcpO1xuXHRcdFx0cmV0VGV4dCA9IGZpeG15anMoanNoaW50LmRhdGEoKSwgdGV4dCkucnVuKCk7XG5cdFx0fSBlbHNlIHtcblx0XHRcdHJldFRleHQgPSBmaXhteWpzLmZpeCh0ZXh0LCBjb25maWcpO1xuXHRcdH1cblx0fSBjYXRjaCAoZXJyKSB7XG5cdFx0Y29uc29sZS5lcnJvcihlcnIpO1xuXHRcdGF0b20uYmVlcCgpO1xuXHRcdHJldHVybjtcblx0fVxuXG5cdGNvbnN0IGN1cnNvclBvc2l0aW9uID0gZWRpdG9yLmdldEN1cnNvckJ1ZmZlclBvc2l0aW9uKCk7XG5cblx0aWYgKHNlbGVjdGVkVGV4dCkge1xuXHRcdGVkaXRvci5zZXRUZXh0SW5CdWZmZXJSYW5nZShlZGl0b3IuZ2V0U2VsZWN0ZWRCdWZmZXJSYW5nZSgpLCByZXRUZXh0KTtcblx0fSBlbHNlIHtcblx0XHRlZGl0b3Iuc2V0VGV4dChyZXRUZXh0KTtcblx0fVxuXG5cdGVkaXRvci5zZXRDdXJzb3JCdWZmZXJQb3NpdGlvbihjdXJzb3JQb3NpdGlvbik7XG59XG5cbmV4cG9ydCBjb25zdCBjb25maWcgPSB7XG5cdGxlZ2FjeToge1xuXHRcdHR5cGU6ICdib29sZWFuJyxcblx0XHRkZWZhdWx0OiB0cnVlLFxuXHRcdGRlc2NyaXB0aW9uOiAnTGVnYWN5IG1vZGUgdXNlcyB0aGUgbGFzdCBzdGFibGUgdmVyc2lvbiBvZiB0aGUgbW9kdWxlIHdoaWNoIHVzZXMgSlNIaW50IHRvIGRldGVjdCBlcnJvcnMgaW4geW91ciBjb2RlIGFuZCBmaXggdGhlbS4gSXQgZG9lcyBub3QgaW5jbHVkZSBhbGwgb2YgdGhlIGZpeGVzIHRoZSBjdXJyZW50IHZlcnNpb24gb2YgRml4TXlKUyBleHBvc2VzLCBidXQgZG9lcyBkbyBhIG11Y2ggYmV0dGVyIGpvYiBvZiBwcmVzZXJ2aW5nIHNvdXJjZSBmb3JtYXR0aW5nLidcblx0fVxufTtcblxuZXhwb3J0IGNvbnN0IGFjdGl2YXRlID0gKCkgPT4ge1xuXHRhdG9tLmNvbW1hbmRzLmFkZCgnYXRvbS13b3Jrc3BhY2UnLCAnRml4TXlKUycsIGluaXQpO1xufTtcbiJdfQ==
+//# sourceURL=/Users/anas/.atom/packages/fixmyjs/index.js

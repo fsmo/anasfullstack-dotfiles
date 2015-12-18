@@ -1,0 +1,19 @@
+Lynx is a great text browser, but it's configuration files are a nightmare.
+
+The global config (e.g., /etc/lynx.cfg) is overwritten by the local config
+(~/.lynx.cfg) which is in turn sometimes overwritten by the local rc
+(~/.lynxrc) and always overwritten by any command line options.
+
+Despite this, its vi-like keybinds, link hinting and mass availability is
+really hard to beat!
+
+For a quick and dirty lynx session, run:
+
+	$ lynx -vikeys -tna -nocolor -number_fields [url]
+
+	-vikeys:         enable vi-like navgiation
+	-tna:            input fields must be activated; great for vikeys
+	-nocolor:        disable color
+	-number_fields:  enable link hinting for links and input fields
+
+For more information, see http://lynx.isc.org/

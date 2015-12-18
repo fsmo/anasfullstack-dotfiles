@@ -1,0 +1,29 @@
+{
+  "_writableState": {
+    "highWaterMark": 16384,
+    "objectMode": false,
+    "needDrain": false,
+    "ending": false,
+    "ended": false,
+    "finished": false,
+    "decodeStrings": true,
+    "defaultEncoding": "utf8",
+    "length": 0,
+    "writing": false,
+    "sync": true,
+    "bufferProcessing": false,
+    "writecb": null,
+    "writelen": 0,
+    "buffer": [],
+    "errorEmitted": false
+  },
+  "writable": true,
+  "domain": null,
+  "_events": {},
+  "_maxListeners": 10,
+  "path": "/Users/anas/projects/goldfish/.meteor/local/cfs/files/AudioStream/AudioStream-Gfx2jTLoD4SzT9TTt-undefined",
+  "fd": null,
+  "flags": "w",
+  "mode": 438,
+  "bytesWritten": 0
+}

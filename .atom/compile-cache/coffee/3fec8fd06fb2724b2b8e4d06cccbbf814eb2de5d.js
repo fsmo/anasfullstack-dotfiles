@@ -1,0 +1,43 @@
+(function() {
+  var TwoDimArray;
+
+  module.exports = TwoDimArray = (function() {
+    function TwoDimArray(rows, cols) {
+      this._arr = new Array(rows * cols);
+      this.row = rows;
+      this.col = cols;
+      return;
+    }
+
+    TwoDimArray.prototype.getInd = function(row, col) {
+      return row * this.col + col;
+    };
+
+    TwoDimArray.prototype.get2DInd = function(ind) {
+      return {
+        r: ind / this.col | 0,
+        c: ind % this.col
+      };
+    };
+
+    TwoDimArray.prototype.get = function(row, col) {
+      return this._arr[this.getInd(row, col)];
+    };
+
+    TwoDimArray.prototype.set = function(row, col, val) {
+      this._arr[row * this.col + col] = val;
+    };
+
+    TwoDimArray.prototype.rawGet = function(ind) {
+      return this._arr[ind];
+    };
+
+    return TwoDimArray;
+
+  })();
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAiZmlsZSI6ICIiLAogICJzb3VyY2VSb290IjogIiIsCiAgInNvdXJjZXMiOiBbCiAgICAiL1VzZXJzL2FuYXMvLmF0b20vcGFja2FnZXMvbWFya2Rvd24tcHJldmlldy1wbHVzL2xpYi90d28tZGltLWFycmF5LmNvZmZlZSIKICBdLAogICJuYW1lcyI6IFtdLAogICJtYXBwaW5ncyI6ICJBQXVCQTtBQUFBLE1BQUEsV0FBQTs7QUFBQSxFQUFBLE1BQU0sQ0FBQyxPQUFQLEdBQXVCO0FBQ1IsSUFBQSxxQkFBQyxJQUFELEVBQU8sSUFBUCxHQUFBO0FBQ1gsTUFBQSxJQUFDLENBQUEsSUFBRCxHQUFZLElBQUEsS0FBQSxDQUFNLElBQUEsR0FBSyxJQUFYLENBQVosQ0FBQTtBQUFBLE1BQ0EsSUFBQyxDQUFBLEdBQUQsR0FBTyxJQURQLENBQUE7QUFBQSxNQUVBLElBQUMsQ0FBQSxHQUFELEdBQU8sSUFGUCxDQUFBO0FBR0EsWUFBQSxDQUpXO0lBQUEsQ0FBYjs7QUFBQSwwQkFNQSxNQUFBLEdBQVEsU0FBQyxHQUFELEVBQU0sR0FBTixHQUFBO2FBQ04sR0FBQSxHQUFJLElBQUMsQ0FBQSxHQUFMLEdBQVcsSUFETDtJQUFBLENBTlIsQ0FBQTs7QUFBQSwwQkFTQSxRQUFBLEdBQVUsU0FBQyxHQUFELEdBQUE7YUFDUjtBQUFBLFFBQUEsQ0FBQSxFQUFHLEdBQUEsR0FBSSxJQUFDLENBQUEsR0FBTCxHQUFXLENBQWQ7QUFBQSxRQUNBLENBQUEsRUFBRyxHQUFBLEdBQU0sSUFBQyxDQUFBLEdBRFY7UUFEUTtJQUFBLENBVFYsQ0FBQTs7QUFBQSwwQkFhQSxHQUFBLEdBQUssU0FBQyxHQUFELEVBQU0sR0FBTixHQUFBO2FBQ0gsSUFBQyxDQUFBLElBQUssQ0FBQSxJQUFDLENBQUEsTUFBRCxDQUFRLEdBQVIsRUFBYSxHQUFiLENBQUEsRUFESDtJQUFBLENBYkwsQ0FBQTs7QUFBQSwwQkFnQkEsR0FBQSxHQUFLLFNBQUMsR0FBRCxFQUFNLEdBQU4sRUFBVyxHQUFYLEdBQUE7QUFDSCxNQUFBLElBQUMsQ0FBQSxJQUFLLENBQUEsR0FBQSxHQUFJLElBQUMsQ0FBQSxHQUFMLEdBQVcsR0FBWCxDQUFOLEdBQXdCLEdBQXhCLENBREc7SUFBQSxDQWhCTCxDQUFBOztBQUFBLDBCQW9CQSxNQUFBLEdBQVEsU0FBQyxHQUFELEdBQUE7YUFDTixJQUFDLENBQUEsSUFBSyxDQUFBLEdBQUEsRUFEQTtJQUFBLENBcEJSLENBQUE7O3VCQUFBOztNQURGLENBQUE7QUFBQSIKfQ==
+
+//# sourceURL=/Users/anas/.atom/packages/markdown-preview-plus/lib/two-dim-array.coffee

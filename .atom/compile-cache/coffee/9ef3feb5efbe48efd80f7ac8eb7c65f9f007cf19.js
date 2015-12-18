@@ -1,0 +1,100 @@
+(function() {
+  var Crypto, Os;
+
+  Os = require('os');
+
+  Crypto = require('crypto');
+
+  module.exports = {
+    disableNewBufferOnOpen: function(val, force) {
+      return this.config('disableNewFileOnOpen', val, force);
+    },
+    disableNewBufferOnOpenAlways: function(val, force) {
+      return this.config('disableNewFileOnOpenAlways', val, force);
+    },
+    restoreOpenFilesPerProject: function(val, force) {
+      return this.config('restoreOpenFilesPerProject', val, force);
+    },
+    saveFolder: function(val, force) {
+      var saveFolderPath;
+      saveFolderPath = this.config('dataSaveFolder', val, force);
+      if (saveFolderPath == null) {
+        this.setSaveFolderDefault();
+        saveFolderPath = this.saveFolder();
+      }
+      return saveFolderPath;
+    },
+    restoreOpenFileContents: function(val, force) {
+      return this.config('restoreOpenFileContents', val, force);
+    },
+    skipSavePrompt: function(val, force) {
+      return this.config('skipSavePrompt', val, force);
+    },
+    extraDelay: function(val, force) {
+      return this.config('extraDelay', val, force);
+    },
+    setSaveFolderDefault: function() {
+      return this.saveFolder(atom.packages.getPackageDirPaths() + this.pathSeparator() + 'save-session' + this.pathSeparator() + 'projects');
+    },
+    pathSeparator: function() {
+      if (this.isWindows()) {
+        return '\\';
+      }
+      return '/';
+    },
+    isWindows: function() {
+      return Os.platform() === 'win32';
+    },
+    isArray: function(value) {
+      return value && typeof value === 'object' && value instanceof Array && typeof value.length === 'number' && typeof value.splice === 'function' && !(value.propertyIsEnumerable('length'));
+    },
+    saveFile: function() {
+      var path, projectPath, projects, saveFolderPath;
+      saveFolderPath = this.saveFolder();
+      if (atom.project.getPaths().length > 0) {
+        projects = atom.project.getPaths();
+        if ((projects != null) && projects.length > 0) {
+          projectPath = projects[0];
+        }
+        if (projectPath != null) {
+          path = this.transformProjectPath(projectPath);
+          return saveFolderPath + this.pathSeparator() + path + this.pathSeparator() + 'project.json';
+        }
+      }
+      return saveFolderPath + this.pathSeparator() + 'project.json';
+    },
+    transformProjectPath: function(path) {
+      var colon;
+      if (this.isWindows) {
+        colon = path.indexOf(':');
+        if (colon !== -1) {
+          return path.substring(0, colon) + path.substring(colon + 1, path.length);
+        }
+      }
+      return path;
+    },
+    hashMyStr: function(str) {
+      var hash;
+      hash = "";
+      if ((str != null) && str !== "") {
+        hash = Crypto.createHash('md5').update(str).digest("hex");
+      }
+      return hash;
+    },
+    config: function(key, val, force) {
+      if ((val != null) || ((force != null) && force)) {
+        return atom.config.set('save-session.' + key, val);
+      } else {
+        return atom.config.get('save-session.' + key);
+      }
+    },
+    observe: function(key, callback) {
+      return atom.config.observe('save-session.' + key, callback);
+    }
+  };
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAiZmlsZSI6ICIiLAogICJzb3VyY2VSb290IjogIiIsCiAgInNvdXJjZXMiOiBbCiAgICAiL1VzZXJzL2FuYXMvLmF0b20vcGFja2FnZXMvc2F2ZS1zZXNzaW9uL2xpYi9jb25maWcuY29mZmVlIgogIF0sCiAgIm5hbWVzIjogW10sCiAgIm1hcHBpbmdzIjogIkFBQUE7QUFBQSxNQUFBLFVBQUE7O0FBQUEsRUFBQSxFQUFBLEdBQUssT0FBQSxDQUFRLElBQVIsQ0FBTCxDQUFBOztBQUFBLEVBQ0EsTUFBQSxHQUFTLE9BQUEsQ0FBUSxRQUFSLENBRFQsQ0FBQTs7QUFBQSxFQUdBLE1BQU0sQ0FBQyxPQUFQLEdBR0U7QUFBQSxJQUFBLHNCQUFBLEVBQXdCLFNBQUMsR0FBRCxFQUFNLEtBQU4sR0FBQTthQUN0QixJQUFDLENBQUEsTUFBRCxDQUFRLHNCQUFSLEVBQWdDLEdBQWhDLEVBQXFDLEtBQXJDLEVBRHNCO0lBQUEsQ0FBeEI7QUFBQSxJQUdBLDRCQUFBLEVBQThCLFNBQUMsR0FBRCxFQUFNLEtBQU4sR0FBQTthQUM1QixJQUFDLENBQUEsTUFBRCxDQUFRLDRCQUFSLEVBQXNDLEdBQXRDLEVBQTJDLEtBQTNDLEVBRDRCO0lBQUEsQ0FIOUI7QUFBQSxJQU1BLDBCQUFBLEVBQTRCLFNBQUMsR0FBRCxFQUFNLEtBQU4sR0FBQTthQUMxQixJQUFDLENBQUEsTUFBRCxDQUFRLDRCQUFSLEVBQXNDLEdBQXRDLEVBQTJDLEtBQTNDLEVBRDBCO0lBQUEsQ0FONUI7QUFBQSxJQVNBLFVBQUEsRUFBWSxTQUFDLEdBQUQsRUFBTSxLQUFOLEdBQUE7QUFDVixVQUFBLGNBQUE7QUFBQSxNQUFBLGNBQUEsR0FBaUIsSUFBQyxDQUFBLE1BQUQsQ0FBUSxnQkFBUixFQUEwQixHQUExQixFQUErQixLQUEvQixDQUFqQixDQUFBO0FBQ0EsTUFBQSxJQUFPLHNCQUFQO0FBQ0UsUUFBQSxJQUFDLENBQUEsb0JBQUQsQ0FBQSxDQUFBLENBQUE7QUFBQSxRQUNBLGNBQUEsR0FBaUIsSUFBQyxD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
+
+//# sourceURL=/Users/anas/.atom/packages/save-session/lib/config.coffee

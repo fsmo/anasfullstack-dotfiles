@@ -1,0 +1,77 @@
+{
+  "name": "atom-fix-path",
+  "main": "./lib/atom-fix-path",
+  "version": "0.1.0",
+  "description": "Preserve `$PATH` when you launch Atom from it's icon or a launcher",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hurrymaplelad/atom-fix-path.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "fix-path": "^1.1.0"
+  },
+  "readme": "# Atom fix-path package\n\nWraps [fix-path]() in atom package to [preserve `$PATH` when you launch Atom](https://github.com/rgbkrk/atom-script#atom-cant-find-node--ruby--python--my-socks) from it's icon or Spotlight.\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/hurrymaplelad/atom-fix-path/issues"
+  },
+  "homepage": "https://github.com/hurrymaplelad/atom-fix-path#readme",
+  "_id": "atom-fix-path@0.1.0",
+  "_shasum": "f6e4b85a44c0ae7605267172c672f6ed96cb1773",
+  "_resolved": "file:../d-115922-30945-11u8s9u/package.tgz",
+  "_from": "../d-115922-30945-11u8s9u/package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [
+      {
+        "name": "fix-path",
+        "version": "1.1.0",
+        "path": "node_modules/fix-path/index.js"
+      },
+      {
+        "name": "shell-path",
+        "version": "1.0.2",
+        "path": "node_modules/fix-path/node_modules/shell-path/index.js"
+      }
+    ],
+    "extensions": {
+      ".coffee": [
+        "lib/atom-fix-path.coffee"
+      ],
+      ".js": [
+        "node_modules/fix-path/index.js",
+        "node_modules/fix-path/node_modules/shell-path/index.js"
+      ],
+      ".json": [
+        "node_modules/fix-path/node_modules/shell-path/package.json",
+        "node_modules/fix-path/package.json",
+        "package.json"
+      ]
+    },
+    "folders": [
+      {
+        "paths": [
+          "lib",
+          "",
+          "spec"
+        ],
+        "dependencies": {
+          "fix-path": "^1.1.0"
+        }
+      },
+      {
+        "paths": [
+          "node_modules/fix-path"
+        ],
+        "dependencies": {
+          "shell-path": "^1.0.0"
+        }
+      }
+    ]
+  }
+}

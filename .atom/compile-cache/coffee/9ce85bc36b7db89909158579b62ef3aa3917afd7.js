@@ -1,0 +1,219 @@
+(function() {
+  var MarkdownPreviewView, mathjaxHelper, path, renderer;
+
+  path = require('path');
+
+  MarkdownPreviewView = require('../lib/markdown-preview-view');
+
+  mathjaxHelper = require('../lib/mathjax-helper');
+
+  renderer = require('../lib/renderer');
+
+  describe("the difference algorithm that updates the preview", function() {
+    var editor, loadPreviewInSplitPane, preview, workspaceElement, _ref;
+    _ref = [], editor = _ref[0], preview = _ref[1], workspaceElement = _ref[2];
+    beforeEach(function() {
+      jasmine.useRealClock();
+      workspaceElement = atom.views.getView(atom.workspace);
+      jasmine.attachToDOM(workspaceElement);
+      waitsForPromise(function() {
+        return atom.packages.activatePackage("markdown-preview-plus");
+      });
+      waitsForPromise(function() {
+        return atom.workspace.open(path.join(__dirname, 'fixtures', 'sync.md'));
+      });
+      return runs(function() {
+        return editor = atom.workspace.getPanes()[0].getActiveItem();
+      });
+    });
+    afterEach(function() {
+      return preview.destroy();
+    });
+    loadPreviewInSplitPane = function() {
+      runs(function() {
+        atom.commands.dispatch(workspaceElement, 'markdown-preview-plus:toggle');
+        return expect(atom.workspace.getPanes()).toHaveLength(2);
+      });
+      waitsFor("markdown preview to be created", function() {
+        return preview = atom.workspace.getPanes()[1].getActiveItem();
+      });
+      return runs(function() {
+        expect(preview).toBeInstanceOf(MarkdownPreviewView);
+        return expect(preview.getPath()).toBe(atom.workspace.getActivePaneItem().getPath());
+      });
+    };
+    describe("updating ordered lists start number", function() {
+      var expectOrderedListsToStartAt, orderedLists;
+      orderedLists = [][0];
+      beforeEach(function() {
+        loadPreviewInSplitPane();
+        return runs(function() {
+          return orderedLists = preview.find('ol');
+        });
+      });
+      expectOrderedListsToStartAt = function(startNumbers) {
+        return runs(function() {
+          var i, _i, _ref1;
+          for (i = _i = 0, _ref1 = startNumbers.length - 1; 0 <= _ref1 ? _i <= _ref1 : _i >= _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
+            if (startNumbers[i] === "1") {
+              expect(orderedLists[i].getAttribute('start')).not.toExist();
+            } else {
+              expect(orderedLists[i].getAttribute('start')).toBe(startNumbers[i]);
+            }
+          }
+        });
+      };
+      it("sets the start attribute when the start number isn't 1", function() {
+        expectOrderedListsToStartAt(["1", "1", "1", "1", "1"]);
+        runs(function() {
+          return editor.setTextInBufferRange([[35, 0], [35, 12]], "2. Ordered 1");
+        });
+        waitsFor("1st ordered list start attribute to update", function() {
+          return orderedLists[0].getAttribute('start') != null;
+        });
+        expectOrderedListsToStartAt(["2", "1", "1", "1", "1"]);
+        runs(function() {
+          return editor.setTextInBufferRange([[148, 0], [148, 14]], "> 2. Ordered 1");
+        });
+        waitsFor("ordered list nested in blockquote start attribute to update", function() {
+          return orderedLists[2].getAttribute('start') != null;
+        });
+        expectOrderedListsToStartAt(["2", "1", "2", "1", "1"]);
+        runs(function() {
+          return editor.setTextInBufferRange([[205, 0], [205, 14]], "  2. Ordered 1");
+        });
+        waitsFor("ordered list nested in unordered list start attribute to update", function() {
+          return orderedLists[3].getAttribute('start') != null;
+        });
+        return expectOrderedListsToStartAt(["2", "1", "2", "2", "1"]);
+      });
+      return it("removes the start attribute when the start number is changed to 1", function() {
+        editor.setTextInBufferRange([[35, 0], [35, 12]], "2. Ordered 1");
+        editor.setTextInBufferRange([[148, 0], [148, 14]], "> 2. Ordered 1");
+        editor.setTextInBufferRange([[205, 0], [205, 14]], "  2. Ordered 1");
+        waitsFor("ordered lists start attributes to update", function() {
+          return (orderedLists[0].getAttribute('start') != null) && (orderedLists[2].getAttribute('start') != null) && (orderedLists[3].getAttribute('start') != null);
+        });
+        expectOrderedListsToStartAt(["2", "1", "2", "2", "1"]);
+        runs(function() {
+          return editor.setTextInBufferRange([[35, 0], [35, 12]], "1. Ordered 1");
+        });
+        waitsFor("1st ordered list start attribute to be removed", function() {
+          return orderedLists[0].getAttribute('start') == null;
+        });
+        expectOrderedListsToStartAt(["1", "1", "2", "2", "1"]);
+        runs(function() {
+          return editor.setTextInBufferRange([[148, 0], [148, 14]], "> 1. Ordered 1");
+        });
+        waitsFor("ordered list nested in blockquote start attribute to be removed", function() {
+          return orderedLists[2].getAttribute('start') == null;
+        });
+        expectOrderedListsToStartAt(["1", "1", "1", "2", "1"]);
+        runs(function() {
+          return editor.setTextInBufferRange([[205, 0], [205, 14]], "  1. Ordered 1");
+        });
+        waitsFor("ordered list nested in unordered list start attribute to be removed", function() {
+          return orderedLists[3].getAttribute('start') == null;
+        });
+        return expectOrderedListsToStartAt(["1", "1", "1", "1", "1"]);
+      });
+    });
+    describe("when a maths block is modified", function() {
+      var mathBlocks;
+      mathBlocks = [][0];
+      beforeEach(function() {
+        waitsFor("LaTeX rendering to be enabled", function() {
+          return atom.config.set('markdown-preview-plus.enableLatexRenderingByDefault', true);
+        });
+        loadPreviewInSplitPane();
+        waitsFor("MathJax to load", function() {
+          return typeof MathJax !== "undefined" && MathJax !== null;
+        });
+        waitsFor("preview to update DOM with span.math containers", function() {
+          mathBlocks = preview.find('script[type*="math/tex"]').parent();
+          return mathBlocks.length === 20;
+        });
+        return waitsFor("Maths blocks to be processed by MathJax", function() {
+          mathBlocks = preview.find('script[type*="math/tex"]').parent();
+          return mathBlocks.children('span.MathJax, div.MathJax_Display').not('.MathJax_Processing').length === 20;
+        });
+      });
+      afterEach(function() {
+        return mathjaxHelper.resetMathJax();
+      });
+      it("replaces the entire span.math container element", function() {
+        spyOn(mathjaxHelper, 'mathProcessor').andCallFake(function() {});
+        runs(function() {
+          return editor.setTextInBufferRange([[46, 0], [46, 43]], "E=mc^2");
+        });
+        waitsFor("mathjaxHelper.mathProcessor to be called", function() {
+          return mathjaxHelper.mathProcessor.calls.length;
+        });
+        return runs(function() {
+          var mathHTMLCSS, modMathBlock;
+          mathBlocks = preview.find('script[type*="math/tex"]').parent();
+          expect(mathBlocks.length).toBe(20);
+          mathHTMLCSS = mathBlocks.children('span.MathJax, div.MathJax_Display');
+          expect(mathHTMLCSS.length).toBe(19);
+          modMathBlock = mathBlocks.eq(2);
+          expect(modMathBlock.children().length).toBe(1);
+          return expect(modMathBlock.children('script').text()).toBe("E=mc^2\n");
+        });
+      });
+      return it("subsequently only rerenders the maths block that was modified", function() {
+        var unprocessedMathBlocks;
+        unprocessedMathBlocks = [][0];
+        spyOn(mathjaxHelper, 'mathProcessor').andCallFake(function(domElements) {
+          return unprocessedMathBlocks = domElements;
+        });
+        runs(function() {
+          return editor.setTextInBufferRange([[46, 0], [46, 43]], "E=mc^2");
+        });
+        waitsFor("mathjaxHelper.mathProcessor to be called", function() {
+          return mathjaxHelper.mathProcessor.calls.length;
+        });
+        return runs(function() {
+          expect(unprocessedMathBlocks.length).toBe(1);
+          expect(unprocessedMathBlocks[0].tagName.toLowerCase()).toBe('span');
+          expect(unprocessedMathBlocks[0].className).toBe('math');
+          expect(unprocessedMathBlocks[0].children.length).toBe(1);
+          return expect(unprocessedMathBlocks[0].children[0].textContent).toBe("E=mc^2\n");
+        });
+      });
+    });
+    return describe("when a code block is modified", function() {
+      return it("replaces the entire span.atom-text-editor container element", function() {
+        loadPreviewInSplitPane();
+        runs(function() {
+          var atomTextEditors, codeBlocks;
+          codeBlocks = preview.find('span.atom-text-editor');
+          expect(codeBlocks.length).toBe(5);
+          expect(codeBlocks.children().length).toBe(5);
+          atomTextEditors = codeBlocks.children('atom-text-editor');
+          expect(atomTextEditors.length).toBe(5);
+          spyOn(renderer, 'convertCodeBlocksToAtomEditors').andCallFake(function() {});
+          return editor.setTextInBufferRange([[24, 0], [24, 9]], "This is a modified");
+        });
+        waitsFor("renderer.convertCodeBlocksToAtomEditors to be called", function() {
+          return renderer.convertCodeBlocksToAtomEditors.calls.length;
+        });
+        return runs(function() {
+          var atomTextEditors, codeBlocks, modCodeBlock;
+          codeBlocks = preview.find('span.atom-text-editor');
+          expect(codeBlocks.length).toBe(5);
+          expect(codeBlocks.children().length).toBe(5);
+          atomTextEditors = codeBlocks.children('atom-text-editor');
+          expect(atomTextEditors.length).toBe(4);
+          modCodeBlock = codeBlocks.eq(0);
+          expect(modCodeBlock.children().length).toBe(1);
+          return expect(modCodeBlock.children().prop('tagName').toLowerCase()).toBe('pre');
+        });
+      });
+    });
+  });
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAiZmlsZSI6ICIiLAogICJzb3VyY2VSb290IjogIiIsCiAgInNvdXJjZXMiOiBbCiAgICAiL1VzZXJzL2FuYXMvLmF0b20vcGFja2FnZXMvbWFya2Rvd24tcHJldmlldy1wbHVzL3NwZWMvdXBkYXRlLXByZXZpZXctc3BlYy5jb2ZmZWUiCiAgXSwKICAibmFtZXMiOiBbXSwKICAibWFwcGluZ3MiOiAiQUFBQTtBQUFBLE1BQUEsa0RBQUE7O0FBQUEsRUFBQSxJQUFBLEdBQXNCLE9BQUEsQ0FBUSxNQUFSLENBQXRCLENBQUE7O0FBQUEsRUFDQSxtQkFBQSxHQUFzQixPQUFBLENBQVEsOEJBQVIsQ0FEdEIsQ0FBQTs7QUFBQSxFQUVBLGFBQUEsR0FBc0IsT0FBQSxDQUFRLHVCQUFSLENBRnRCLENBQUE7O0FBQUEsRUFHQSxRQUFBLEdBQXNCLE9BQUEsQ0FBUSxpQkFBUixDQUh0QixDQUFBOztBQUFBLEVBS0EsUUFBQSxDQUFTLG1EQUFULEVBQThELFNBQUEsR0FBQTtBQUM1RCxRQUFBLCtEQUFBO0FBQUEsSUFBQSxPQUFzQyxFQUF0QyxFQUFDLGdCQUFELEVBQVMsaUJBQVQsRUFBa0IsMEJBQWxCLENBQUE7QUFBQSxJQUVBLFVBQUEsQ0FBVyxTQUFBLEdBQUE7QUFDVCxNQUFBLE9BQU8sQ0FBQyxZQUFSLENBQUEsQ0FBQSxDQUFBO0FBQUEsTUFDQSxnQkFBQSxHQUFtQixJQUFJLENBQUMsS0FBSyxDQUFDLE9BQVgsQ0FBbUIsSUFBSSxDQUFDLFNBQXhCLENBRG5CLENBQUE7QUFBQSxNQUVBLE9BQU8sQ0FBQyxXQUFSLENBQW9CLGdCQUFwQixDQUZBLENBQUE7QUFBQSxNQUlBLGVBQUEsQ0FBZ0IsU0FBQSxHQUFBO2VBQ2QsSUFBSSxDQUFDLFFBQVEsQ0FBQyxlQUFkLENBQThCLHVCQUE5QixFQURjO01BQUEsQ0FBaEIsQ0FKQSxDQUFBO0FBQUEsTUFPQSxlQUFBLENBQWdCLFNBQUEsR0FBQTtlQUNkLElBQUksQ0FBQyxTQUFTLENBQUMsSUFBZixDQUFvQixJQUFJLENB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
+
+//# sourceURL=/Users/anas/.atom/packages/markdown-preview-plus/spec/update-preview-spec.coffee

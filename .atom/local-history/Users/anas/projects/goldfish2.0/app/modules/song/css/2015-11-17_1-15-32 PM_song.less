@@ -1,0 +1,46 @@
+.sidenav-left {
+  background-color : #282828;
+  color            : #FFFFFF;
+  max-width: 150px;
+  flex-shrink: 0;
+}
+
+.chords, .chord-container {
+  flex: 0 0 150px;
+  border-top: 1px solid #323232;
+}
+
+.left-menu-title {
+  font-weight: bold;
+}
+
+.melody-container {
+  background-color : #181818;
+}
+
+.chord-container {
+}
+
+.chord-container, .melody-container {
+  position: relative;
+}
+
+.chord-container-inner, .melody-container-inner {
+  position: absolute;
+  // width: 100%;
+  width: auto;
+  height: 100%;
+}
+
+@media @mobile, @tablet {
+  md-toolbar, .md-toolbar-tools {
+    min-height: 34px;
+    height: 34px;
+  }
+
+  .md-sidenav-right {
+    @width: 200px;
+    max-width: @width;
+    min-width: @width;
+  }
+}

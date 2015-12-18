@@ -1,0 +1,9 @@
+## Error Based injection
+
+#### Testing to get a database Error
+  - 1\
+  - 1'
+
+#### Sql comment 
+  - --+ (followed by space)
+  - # ()

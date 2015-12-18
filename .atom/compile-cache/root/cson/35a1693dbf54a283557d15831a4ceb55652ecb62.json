@@ -1,0 +1,1 @@
+{".source.js":{"ngModule":{"prefix":"ngmodule","body":"(function() {\n    'use strict';\n\n    angular\n        .module('${1:module}', [\n            '${2:dependencies}'\n        ]);\n})();"}}}

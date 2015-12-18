@@ -1,0 +1,32 @@
+
+<div id="viz" ng-hide="$scope.isMobile">
+	<canvas id="analyser" ng-show="isRecording" width="1024" height="500"></canvas>
+	<canvas ng-show="showAnalysis" id="wavedisplay" width="1024" height="500"></canvas>
+</div>
+<div id="controls">
+	<md-button class="md-fab" aria-label="Eat cake" ng-class="isRecording? 'recording' : '' " ng-click="record()">
+		<md-tooltip>
+			Start Recording
+		</md-tooltip>
+    <md-icon md-svg-icon="av:ic_mic_24px" ></md-icon>
+  </md-button>
+	<md-button ng-show="showAnalysis" id="save" href="#" class="md-fab" aria-label="Eat cake">
+		<md-tooltip>
+			Save Record to PC
+		</md-tooltip>
+		<md-icon md-svg-icon="file:ic_file_download_24px" ></md-icon>
+	</md-button>
+	<md-button ng-show="showAnalysis" ng-click="uploadAudio()" class="md-fab" aria-label="Eat cake">
+		<md-tooltip>
+			Upload Record
+		</md-tooltip>
+		<md-icon md-svg-icon="file:ic_file_upload_24px" ></md-icon>
+	</md-button>
+</div>
+
+<md-button  ng-click="test()" class="md-fab" aria-label="Eat cake">
+		<md-tooltip>
+			test
+		</md-tooltip>
+		<md-icon md-svg-icon="action:ic_eavent_seat_24px" ></md-icon>
+</md-button>

@@ -1,0 +1,17 @@
+# Project goldfish
+
+## Error Troubleshooting:
+
+#### In case of mongo server can not start:
+  1. remove  .meteor/local/db/mongod.lock
+  2. killall meteor
+  3. killall mongod
+  4. meteor reset
+  5. meteor
+
+#### Android Emulator error
+1. try to chech your PATH and ANDROID_HOME variable make sure they contain the right sdk v22
+1. run
+```
+$ android update sdk -t build-tools-22.0.0 --all -u
+```

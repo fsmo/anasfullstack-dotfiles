@@ -1,0 +1,34 @@
+'use strict';
+
+/**
+ * @ngdoc directive
+ * @name song.Directives.flexGrow
+ * @description flexGrow directive
+ */
+angular
+  .module('song')
+  .directive('flexGrow', [
+    function() {
+      return {
+        // name: '',
+        // priority: 1,
+        // terminal: true,
+        // scope: {}, // {} = isolate, true = child, false/undefined = no change
+        // controller: function($scope, $element, $attrs, $transclude) {},
+        // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+        // restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
+        // template: '',
+        // templateUrl: '',
+        // replace: true,
+        // transclude: true,
+        // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+        restrict: 'A',
+
+        link: function(scope, element, attr) {
+          element.css({
+            flex: '' + (parseInt(attr.flexGrow)) + ' 1 auto'
+          });
+        }
+      };
+    }
+  ]);

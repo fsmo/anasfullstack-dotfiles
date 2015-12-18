@@ -1,0 +1,29 @@
+
+<div layout-fill layout="column" layout-align="start center">
+    <md-toolbar>
+      <div layout="row" class="md-toolbar-tools">
+        <div flex layout="row" layout-align="start center">
+          <md-button aria-label="Settings" ui-sref="main.record">
+            <md-tooltip>
+              Record New Song
+          </md-tooltip>
+            <md-icon md-svg-icon="navigation:ic_close_24px"></md-icon>
+            Restart
+          </md-button>
+        </div>
+        <div flex layout="row" layout-align="center center" style="color:white">
+          <md-button ng-click="editSongName()">{{song.name}}</md-button>
+        </div>
+        <div flex layout="row" layout-align="end center">
+          <md-button class="md-icon-button" ui-sref="main.edit">
+            <md-icon md-svg-icon="image:ic_photo_24px"></md-icon>
+          </md-button>
+        </div>
+      </div>
+    </md-toolbar>
+
+    <div layout="row" flex ui-view></div>
+    <blaze-template name="loginButtons"></blaze-template>
+</div>
+
+<on-screen-piano></on-screen-piano>

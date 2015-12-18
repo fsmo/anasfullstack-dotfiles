@@ -1,0 +1,24 @@
+<div class="record-view">
+  <div class="welcome">
+    Welcome to GoldFish ;-) :D
+  </div>
+
+  <div layout="row" layout-align="space-around center" class="record-container">
+
+    <div flix="50" class="record-controls">
+      <md-button class="md-fab md-primary" ng-class="isRecording? 'recording' : '' " ng-click="record()">
+        <md-icon md-svg-icon="av:ic_mic_24px"></md-icon>
+      </md-button>
+      <span ng-show="isRecording"> <timer class="record-timer md-primary">  {{minutes}} : {{seconds}} </timer></span>
+    </div>
+    <md-button class="md-fab md-primary" ng-href="#/melody">
+      <md-icon md-svg-icon="av:ic_skip_next_24px"></md-icon>
+    </md-button>
+    <div flix="50" id="viz">
+      <canvas id="analyser"></canvas>
+    </div>
+
+  </div>
+
+</div>
+

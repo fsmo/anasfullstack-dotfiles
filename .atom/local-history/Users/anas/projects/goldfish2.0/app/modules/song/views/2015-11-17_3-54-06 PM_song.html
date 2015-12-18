@@ -1,0 +1,110 @@
+
+<md-fab-speed-dial md-direction="up" class="md-fling md-fab-bottom-right">
+  <md-fab-trigger>
+    <md-button class="md-fab md-primary" aria-label="Play">
+      <md-icon md-svg-icon="av:ic_play_arrow_24px"></md-icon>
+    </md-button>
+  </md-fab-trigger>
+</md-fab-speed-dial>
+
+<div layout="column" layout-fill>
+  <md-toolbar flex="none">
+    <div layout="row" class="md-toolbar-tools">
+      <div flex layout="row" layout-align="start center">
+        <md-button class="md-icon-button" ng-href="#/">
+          <md-icon md-svg-icon="action:ic_settings_backup_restore_24px"></md-icon>
+        </md-button>
+      </div>
+
+      <div flex layout="row" layout-align="center center" style="color:white">
+        <md-button>My Song</md-button>
+      </div>
+
+      <div flex layout="row" layout-align="end end">
+        <md-button class="md-icon-button" ng-click="toggleRight()" ng-hide="isOpenRight()">
+          <i class="fa fa-bars"></i>
+        </md-button>
+      </div>
+    </div>
+  </md-toolbar>
+
+  <div layout="row" flex="grow">
+    <div flex class="sidenav-left md-whiteframe-z2" layout="column" md-component-id="left">
+      <div flex class="melody" layout="column" layout-align="center center" flex-stretch-items>
+        <span class="left-menu-title" flex="100" layout layout-align="center center">Melody</span>
+
+        <md-radio-group ng-model="melodyInstrument">
+          <md-radio-button value="Violin">Violin</md-radio-button>
+          <md-radio-button value="Saxophone">Saxophone</md-radio-button>
+          <md-radio-button value="Bass">Bass</md-radio-button>
+          <!-- <md-radio-button value="Recording">Recording</md-radio-button> -->
+        </md-radio-group>
+
+        <div layout="column" hide-md hide-sm>
+          <div id="volume" flex="50">Volume</div>
+
+          <div layout="row" layout-align="center">
+            <md-slider flex="90" ng-model="volume" min="0" max="100" aria-label="green" id="green-slider"
+                       class="md-accent volume-slider"></md-slider>
+          </div>
+        </div>
+      </div>
+
+      <div flex class="chords" layout="column" layout-align="center center">
+        <span class="left-menu-title" flex="100" layout layout-align="center center">chords</span>
+
+        <md-radio-group ng-model="chordsInstrument">
+          <md-radio-button value="Guitar">Guitar</md-radio-button>
+          <md-radio-button value="Piano">Piano</md-radio-button>
+        </md-radio-group>
+      </div>
+    </div>
+
+    <div class="music-display-container" flex layout="column">
+      <div class="music-display" layout="column">
+        <div class="playhead"></div>
+        <div flex class="melody-container">
+          <div class="melody-container-inner">
+            <piano-roll-display></piano-roll-display>
+          </div>
+        </div>
+        <div flex class="chord-container">
+          <div class="chord-container-inner">
+            <chords-display></chords-display>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div layout="column" layout-align="center center">
+      <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" layout="column">
+        <md-toolbar class="md-theme-light">
+          <h1 class="md-toolbar-tools">Menu</h1>
+        </md-toolbar>
+
+        <md-menu-content>
+          <md-menu-item>
+            <md-button class="md-primary" ng-href="/jsaudio/index.html">
+              <md-icon md-svg-icon="image:ic_audiotrack_24px"></md-icon>
+              Audio Test Page
+            </md-button>
+          </md-menu-item>
+
+          <md-menu-divider></md-menu-divider>
+
+          <md-menu-item>
+            <md-button ng-click="close()" class="md-primary">
+              <md-icon md-svg-icon="navigation:ic_close_24px"></md-icon>
+              Close
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+
+        <div flex></div>
+
+        <md-slider flex="none" ng-model="volume" min="0" max="100" aria-label="green" id="green-slider"
+         class="md-accent volume-slider"></md-slider>
+      </md-sidenav>
+    </div>
+  </div>
+</div>

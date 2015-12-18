@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html moznomarginboxes mozdisallowselectionprint>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui" />
+		<meta name="google-site-verification" content="zWME9sq3u6TDL5gqXqBz4l1Zl6AwaAlSm-g2htAtOro" />
+		<meta name="theme-color" content="#18abb0">
+
+		<link rel="icon" type="image/png" href="/favicon.png" />
+
+		<meta property="og:image" content="http://scorecloud.com/og-image-cloud.png" />
+
+		{{#if canonicalUrl}}
+			<link rel="canonical" href="{{canonicalUrl}}" />
+		{{/if}}
+
+		{{#if global.dev}}
+		<meta name="robots" content="noindex added by anas with love">
+		{{/if}}
+
+		{{#with pageMeta}}
+			{{#if isHidden}}
+				<meta name="robots" content="noindex">
+			{{/if}}
+
+			{{#if title}}
+				<title>ScoreCloud</title>
+				<meta property="og:title" content="{{title}}" />
+			{{/if}}
+
+			{{#if description}}
+				<meta name="description"        content="{{description}}" />
+				<meta property="og:description" content="{{description}}" />
+			{{/if}}
+		{{/with}}
+
+		{{#with songOg}}
+			{{#if success}}
+				<title>{{filename}} - ScoreCloud</title>
+				<meta property="og:title" content="{{filename}} - ScoreCloud" />
+
+				<meta name="description"        content="{{songComposer}} - {{songTitle}}, a score from {{author}}. Listen and check out the sheet music on ScoreCloud" />
+				<meta property="og:description" content="{{songComposer}} - {{songTitle}}, a score from {{author}}. Listen and check out the sheet music on ScoreCloud" />
+
+				<meta property="og:site_name" content="ScoreCloud" />
+				<meta property="og:type" content="music.song" />
+
+				<meta property="og:audio" content="http://my.scorecloud.com/api/2.0/song/{{id}}/playback.mp3" />
+				<meta property="og:audio:title" content="{{filename}}" />
+				<meta property="og:audio:artist" content="{{author}}" />
+				<meta property="og:audio:album" content="{{author}}'s ScoreCloud songs" />
+				<meta property="og:audio:type" content="application/mp3" />
+			{{/if}}
+
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:site" content="@ScoreCloud">
+		{{/with}}
+
+		<meta name="twitter:app:id:iphone" content="566535238"/>
+		<meta name="twitter:app:id:ipad" content="763658394"/>
+
+		<script>
+			var INITIAL_TIME = new Date().getTime();
+		</script>
+
+		{{{includeCSS}}}
+		{{{includeJS}}}
+	</head>
+	<body>
+		<div class="css-media-detector"></div>
+		<div id="feature-error">
+			Browser features missing, please
+			<a target="_blank" href="http://browsehappy.com/">update your browser</a>!
+		</div>
+	</body>
+</html>
